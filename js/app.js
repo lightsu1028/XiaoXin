@@ -8,12 +8,13 @@ window.app = {
 	/**
 	 * 后端服务发布的url地址
 	 */
-	serverUrl: 'http://192.168.1.3:8080',
+	//10.0.2.10  192.168.56.1
+	serverUrl: 'http://10.0.2.10:8721/chat-xiaoxin',
 	
 	/**
 	 * 图片服务器的url地址
 	 */
-	imgServerUrl: 'http://192.168.1.70:88/imooc/',
+	imgServerUrl: 'http://94.191.89.118:88/em/',
 	
 	/**
 	 * 判断字符串是否为空

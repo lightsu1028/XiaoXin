@@ -9,11 +9,128 @@
 	</head>
 
 	<body>
-		<h1>wode</h1>
+		
+		<div class="mui-content">
+		    <ul class="mui-table-view">
+		        <li class="mui-table-view-cell mui-media">
+		            <a id="link_my_face" href="javascript:;">
+		            	<span class="mui-pull-right mui-icon mui-icon-arrowright" 
+		            		style="line-height: 42px;color: lightgray;margin-left: 3px;">
+		            	</span>
+		                <img id="face_img" class="mui-media-object mui-pull-right" src="">
+		                <div class="mui-media-body" style="line-height: 42px;font-size: 16px">
+		                 			   头像
+		                </div>
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell mui-media">
+		            <a id="link_my_nickname" href="javascript:;">
+		                <span class="mui-pull-right mui-icon mui-icon-arrowright" 
+		            		style="line-height: 42px;color: lightgray;margin-left: 2px;">
+		            	</span>
+		            	<span id="span_nickname" class="mui-pull-right" style="color:gray;font-size: 14px;margin-top: 10px;"></span>
+		                <div class="mui-media-body" style="line-height: 42px;font-size: 16px;">
+		                    昵称
+		                </div>
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		               <span id="span_account" class="mui-pull-right" style="color:gray;font-size: 14px;">
+		               </span>
+		                <div class="mui-media-body">
+		                    账号
+		                </div>
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		            	<span class="mui-pull-right mui-icon mui-icon-arrowright" 
+		            		style="line-height: 42px;color: lightgray;margin-left: 3px;">
+		            	</span>
+		                <img class="mui-media-object mui-pull-right" 
+		                	src="image/qrcode.png" style="max-width: 20px;height: 20px;margin-top: 10px;">
+		                <div id="my_qr_code" class="mui-media-body" style="line-height: 42px;font-size: 16px">
+		                   我二维码
+		                </div>
+		            </a>
+		        </li>
+		    </ul>
+		    
+		    <br/>
+		    <ul class="mui-table-view">
+		    	<li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		                <div id="logout" class="mui-media-body" style="text-align: center;">
+		                    退出登录
+		                </div>
+		            </a>
+		        </li>
+		    </ul>
+		</div>
+		
+		
+		
+		
 		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/app.js" ></script>
 		<script type="text/javascript">
-			mui.init()
+			mui.init();
+			mui.plusReady(function(){
+				let currentWV = plus.webview.currentWebview();
+				currentWV.addEventListener("show",function(){
+					refreshUserInfo();
+				});
+				
+				//页面跳转我的的头像
+				let link_my_face = document.getElementById("link_my_face");
+				link_my_face.addEventListener("tap",function(){
+					mui.openWindow("myface.html","myface.html");
+				})
+				
+				
+				let link_my_nickname = document.getElementById("link_my_nickname");
+				link_my_nickname.addEventListener("tap",function(){
+					mui.openWindow("mynickname.html","mynickname.html");
+				})
+				
+				
+				
+				//添加自定义事件，刷新头像
+				window.addEventListener("refresh",function(){
+					refreshUserInfo();
+				})
+				
+			})
+			
+			let logout = document.getElementById("logout");
+				logout.addEventListener("tap",function(){
+					app.userLogout();
+					mui.openWindow("login.html","login.html");
+				})
+			
+			function refreshUserInfo(){
+					let userInfo = app.getUserGlobalInfo();
+					if(app.isNotNull(userInfo)){
+						let faceImage=userInfo.faceImage;
+						let nickName = userInfo.nickname;
+						let account = userInfo.username;
+						let qrcode = userInfo.qrcode;
+						
+						let span_nickname = document.getElementById("span_nickname");
+						let span_account  = document.getElementById("span_account");
+						
+						span_nickname.innerHTML=nickName;
+						span_account.innerHTML=account;
+						
+						if(app.isNotNull(faceImage)){
+							let face_img = document.getElementById("face_img");
+							face_img.src=app.imgServerUrl+face_img;
+						}
+					}
+				}
 		</script>
 	</body>
-
+	
+	
 </html>

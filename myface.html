@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/header.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+		    <h1 class="mui-title title-color">个人头像</h1>
+		    
+		    <a id="action_myface" class="mui-icon mui-icon-right-nav mui-pull-right" style="color: white;">...</a>
+		</header>
+		
+		<div class="mui-content">
+		    <img id="img_face" src="image/bg.png" />
+		</div>
+		
+		<div id="sheet_myface" class="mui-popover mui-popover-bottom mui-popover-action ">
+		    <!-- 可选择菜单 -->
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a id="link_choose_photo" href="#">选择图片</a>
+		      </li>
+		      <li class="mui-table-view-cell">
+		        <a id="link_save_photo" href="#">下载图片</a>
+		      </li>
+		    </ul>
+		    <!-- 取消菜单 -->
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#sheet_myface"><b>取消</b></a>
+		      </li>
+		    </ul>
+		</div>
+		
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/app.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function(){
+				
+				refreshUser();
+				
+				//获取手机端可见屏幕的宽度
+				let imgWidth = document.body.clientWidth;
+				img_face.width=imgWidth;
+				img_face.height=imgWidth;
+				
+				let action_myface = document.getElementById("action_myface");
+				action_myface.addEventListener("tap",function(){
+					mui("#sheet_myface").popover("toggle");
+				});
+				
+				let link_choose_photo = document.getElementById("link_choose_photo");
+				link_choose_photo.addEventListener("tap",function(){
+					mui.openWindow({url:"plugin/v3.1.6/myface-uploader.html",
+									id:"myface-uploader.html",
+									createNew:true
+								   });
+					mui("#sheet_myface").popover("toggle");
+				});
+				
+				let link_save_photo = document.getElementById("link_save_photo");
+				
+				link_save_photo.addEventListener("tap",function(){
+					plus.nativeUI.showWaiting("下载中...");
+					
+					let userInfo = app.getUserGlobalInfo();
+					let downLoadUrl=app.imgServerUrl+userInfo.faceImageBig;
+					
+					let dtask = plus.downloader.createDownload(
+						downLoadUrl,
+						{},
+						function(downloadFile,Status){
+							plus.nativeUI.closeWaiting();
+							if(status==200){
+								let tempFile = downloadFile.filename;
+								plus.gallery.save(tempFile,function(){
+									app.showToast("保存照片成功!","success");
+								})
+							}else{
+								app.showToast("下载错误...","error");
+								console.log(status)
+							}
+						}
+					);
+					dtask.start();//启动任务管理器
+				})
+			})
+			
+			function refreshUser(){
+				let userInfo = app.getUserGlobalInfo();
+				let img_face = document.getElementById("img_face");
+				if(userInfo!=null){
+					let faceImage=userInfo.faceImageBig;
+					if(app.isNotNull(faceImage)){
+						img_face.src=app.imgServerUrl+faceImage;
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>
