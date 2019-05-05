@@ -69,20 +69,22 @@
 				
 				let link_save_photo = document.getElementById("link_save_photo");
 				
+				let userInfo = app.getUserGlobalInfo();
+				let downLoadUrl=app.imgServerUrl+userInfo.faceImageBig;
+				
+				
 				link_save_photo.addEventListener("tap",function(){
-					plus.nativeUI.showWaiting("下载中...");
 					
-					let userInfo = app.getUserGlobalInfo();
-					let downLoadUrl=app.imgServerUrl+userInfo.faceImageBig;
+					plus.nativeUI.showWaiting("下载中...");
 					
 					let dtask = plus.downloader.createDownload(
 						downLoadUrl,
 						{},
-						function(downloadFile,Status){
+						function(downloadFile,status){
 							plus.nativeUI.closeWaiting();
 							if(status==200){
-								let tempFile = downloadFile.filename;
-								plus.gallery.save(tempFile,function(){
+//								let tempFile = downloadFile.filename;
+								plus.gallery.save(downloadFile.filename,function(){
 									app.showToast("保存照片成功!","success");
 								})
 							}else{
