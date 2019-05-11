@@ -9,10 +9,43 @@
 	</head>
 
 	<body>
-		<h1>faxian</h1>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<img class="mui-media-object mui-pull-left" src="image/friends.png" style="max-width: 24px;height: 24px;">
+					<p class="mui-ellipsis" style="line-height: :24px;color: #000000;font-size: 16px;">
+						<span style="margin-left: 10px;">朋友圈</span>
+					</p>
+				</li>
+			</ul>
+			<br />
+
+			<ul class="mui-table-view">
+				<li id="link_search_friends" class="mui-table-view-cell mui-media">
+					<img class="mui-media-object mui-pull-left" src="image/addfriends.png" style="max-width: 24px;height: 24px;">
+					<p class="mui-ellipsis" style="line-height: :24px;color: #000000;font-size: 16px;">
+						<span style="margin-left: 10px;">添加好友</span>
+					</p>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<img class="mui-media-object mui-pull-left" src="image/scanscan.png" style="max-width: 24px;height: 24px;">
+					<p class="mui-ellipsis" style="line-height: :24px;color: #000000;font-size: 16px;">
+						<span style="margin-left: 10px;">扫一扫</span>
+					</p>
+				</li>
+			</ul>
+		</div>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init()
+			mui.plusReady(function() {
+				var link_search_friends  = document.getElementById("link_search_friends");
+				link_search_friends.addEventListener("tap",function(){
+					mui.openWindow("searchFriends.html","searchFriends.html");
+				})
+			})
 		</script>
 	</body>
 
