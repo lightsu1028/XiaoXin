@@ -29,7 +29,7 @@
 				</li>
 			</ul>
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-media">
+				<li id="link_scanme" class="mui-table-view-cell mui-media">
 					<img class="mui-media-object mui-pull-left" src="image/scanscan.png" style="max-width: 24px;height: 24px;">
 					<p class="mui-ellipsis" style="line-height: :24px;color: #000000;font-size: 16px;">
 						<span style="margin-left: 10px;">扫一扫</span>
@@ -44,6 +44,10 @@
 				var link_search_friends  = document.getElementById("link_search_friends");
 				link_search_friends.addEventListener("tap",function(){
 					mui.openWindow("searchFriends.html","searchFriends.html");
+				})
+				let link_scanme = document.getElementById("link_scanme");
+				link_scanme.addEventListener("tap",function(){
+					mui.openWindow("scanme.html","scanme.html");
 				})
 			})
 		</script>

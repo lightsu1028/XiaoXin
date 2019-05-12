@@ -89,7 +89,18 @@
 					}
 				})
 			})
+			//延时加载
+			setTimeout("initData","1000");
 		})
+		
+		//预加载
+		function initData(){
+			let xiaoxin_chatlist = plus.webview.getWebviewById("xiaoxin-chatlist.html");
+			mui.fire(xiaoxin_chatlist,"refresh");
+			
+			let xiaoxin_mine = plus.webview.getWebviewById("xiaoxin-mine.html");
+			mui.fire(xiaoxin_mine,"refresh");
+		}
 	</script>
 </body>
 </html>
