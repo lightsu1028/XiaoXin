@@ -119,7 +119,7 @@
 						for(let j=0;j<contactArray[i].length;j++){
 							let friend = contactArray[i][j];
 							contactHtml+='<li data-group="'+firstCharArray[i]+'" class="mui-table-view-divider mui-indexed-list-group">'+firstCharArray[i]+'</li>'+
-										'<li friendUserId="'+friend.friendUserId+'" friendUserNickName="'+friend.friendUserNickName+'" friendUserImage="'+friend.friendUserImage+'" class="mui-media mui-indexed-list-item" style="padding: 8px 10px;">'+
+										'<li class="chat-with-friend" friendUserId="'+friend.friendUserId+'" friendUserNickName="'+friend.friendUserNickName+'" friendUserImage="'+friend.friendUserImage+'" class="mui-media mui-indexed-list-item" style="padding: 8px 10px;">'+
 											'<img class="mui-media-object mui-pull-left" src="'+app.imgServerUrl+friend.friendUserImage+'" style="max-width: 35px;height: 35px;"/>'+
 											'<div class="mui-media-body" style="line-height: 35px;">'+friend.friendUserNickName+'</div>'+
 										'</li>';
@@ -133,6 +133,23 @@
 				
 				clearContactArray();
 				
+				//通讯录好友批量绑定事件
+				mui("#friend_list_ul").on("tap",".chat-with-friend",function(e){
+					
+					let friendUserId=this.getAttribute("friendUserId");
+					let friendUserNickName=this.getAttribute("friendUserNickName");
+					let friendUserImage=this.getAttribute("friendUserImage");
+					
+					mui.openWindow({
+						url:"chatting.html",
+						id:"chatting-"+friendUserId,//每个朋友的聊天页面都唯一
+						extras:{
+							friendUserId:friendUserId,
+							friendUserNickName:friendUserNickName,
+							friendUserImage:friendUserImage
+						}
+					})
+				})
 			}
 			
 			function clearContactArray(){
