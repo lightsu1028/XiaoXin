@@ -18,7 +18,7 @@
 </head>
 <body>
 	<header class="mui-bar mui-bar-nav title" >
-	    <h1 class="mui-title title-color" ><b>小信</b></h1>
+	    <h1 class="mui-title title-color" id="head_title"><b>小信</b></h1>
 	</header>
 	
 	<nav class="mui-bar mui-bar-tab">
@@ -64,6 +64,9 @@
 			bottom:'50px'
 		}
 		mui.plusReady(function(){
+			
+			networkOnchange();
+			
 			//获取当前webView对象
 			let indexWebView = plus.webview.currentWebview();
 			//向当前主页webView追加子页的4张webview对象
@@ -100,6 +103,19 @@
 			
 			let xiaoxin_mine = plus.webview.getWebviewById("xiaoxin-mine.html");
 			mui.fire(xiaoxin_mine,"refresh");
+		}
+		
+		//监听当前设备网络变化
+		function networkOnchange(){
+			document.addEventListener("netchange",function(){
+				let network = plus.networkinfo.getCurrentType();
+				let head_title = document.getElementById("head_title");
+				if(network==0||network==1){
+					head_title.innerHTML='<b>小信（未连接）</b>';
+				}else{
+					head_title.innerHTML='<b>小信</b>';
+				}
+			})
 		}
 	</script>
 </body>
