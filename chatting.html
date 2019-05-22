@@ -176,7 +176,7 @@
 			let friendUserNickName;
 			let friendUserImage;
 			//创建命名空间
-			(function($,doc){
+//			(function($,doc){
 				mui.plusReady(function(){
 					let chatWebView = plus.webview.currentWebview();
 					
@@ -191,7 +191,7 @@
 					let chatting_nickname = document.getElementById("chatting-nickname");
 					chatting_nickname.innerHTML=friendUserNickName;
 					
-					let areaList = doc.getElementById("msg");
+					let areaList = document.getElementById("msg");
 					// 设置聊天记录进入页面的时候自动滚动到最后一条
 					areaList.scrollTop=areaList.scrollHeight+areaList.offsetHeight;
 					
@@ -211,7 +211,7 @@
 					//对当前得人窗口监听resize事件
 					window.addEventListener("resize",function(){
 						resizeScreen();
-						doc.getElementById("msg-outter").style.paddingBottom = "50px";
+						document.getElementById("msg-outter").style.paddingBottom = "50px";
 					});
 					
 					
@@ -236,23 +236,23 @@
 						msg_text.value="";
 						//发送按钮置灰
 						send.setAttribute("class","mui-btn-gray");
-						
+						//向netty服务器发送消息
 						let chatlistWebview = plus.webview.getWebviewById("xiaoxin-chatlist.html");
 						chatlistWebview.evalJS("CHAT.chat('"+msg_text_val+"')");
 //						receiveMsg(app.imgServerUrl+friendUserImage,"测试接收到信息~~~~~");
 					});
 					
 				})
-			}(mui,document));
+//			}(mui,document));
 			
 			//接受消息
-			function receiveMsg(faceImg,msg){
+			function receiveMsg(msg){
 				
 				let msg_list = document.getElementById("msg");
 				
 				let msg_html= '<div class="friend_lists">'+
 									'<div class="header_img">'+
-										'<img src="'+faceImg+'" width="40px" height="40px" />'+
+										'<img src="'+app.imgServerUrl+friendUserImage+'" width="40px" height="40px" />'+
 									'</div>'+
 									'<div class="msg-wrapper right">'+
 										'<p class="msg-left-white">'+msg+'</p>'+
@@ -295,7 +295,7 @@
 				let audioPlayer = plus.audio.createPlayer("/mp3/di_didi.mp3");
 				audioPlayer.play();
 			}
-			
+			 
 			// 重新调整聊天窗口
 			function resizeScreen() {
 				var areaMsgList = document.getElementById("msg");

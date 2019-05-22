@@ -186,7 +186,7 @@
 					} else {
 						// 重连websocket
 						CHAT.init();
-//						setTimeout("CHAT.reChat('" + msg + "')", "1000");
+						setTimeout("CHAT.reChat('" + msg + "')", "1000");
 					}
 					// 渲染快照列表进行展示
 //					loadingChatSnapshot();
@@ -230,15 +230,15 @@
 //					var myId = chatMsg.receiverId;
 //					
 //					// 调用聊天webview的receiveMsg方法
-////					var chatWebview = plus.webview.getWebviewById("chatting-180718GA2ZM9N5S8");
+					var chatWebview = plus.webview.getWebviewById("chatting-26c9bfe1-ab49-440f-a03d-8ac5f3f825c4");
 //					var chatWebview = plus.webview.getWebviewById("chatting-" + friendUserId);
 //					var isRead = true;	// 设置消息的默认状态为已读
-//					if (chatWebview != null) {
-//						chatWebview.evalJS("receiveMsg('" + msg + "')");
-//						chatWebview.evalJS("resizeScreen()");
-//					} else {
-//						isRead = false;	// chatWebview 聊天页面没有打开，标记消息未读状态
-//					}
+					if (chatWebview != null) {
+						chatWebview.evalJS("receiveMsg('" + e.data + "')");
+						chatWebview.evalJS("resizeScreen()");
+					} else {
+						isRead = false;	// chatWebview 聊天页面没有打开，标记消息未读状态
+					}
 //					
 //					// 接受到消息之后，对消息记录进行签收
 //					var dataContentSign = new app.DataContent(app.SIGNED, null, chatMsg.msgId);
