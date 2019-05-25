@@ -236,9 +236,15 @@
 						msg_text.value="";
 						//发送按钮置灰
 						send.setAttribute("class","mui-btn-gray");
+						
+						var chatMsg = new app.ChatMsg(userInfo.id, friendUserId, msg_text_val, null);
+						// 构建DataContent
+						var dataContent = new app.DataContent(app.CHAT, chatMsg, null);
+						
 						//向netty服务器发送消息
 						let chatlistWebview = plus.webview.getWebviewById("xiaoxin-chatlist.html");
-						chatlistWebview.evalJS("CHAT.chat('"+msg_text_val+"')");
+//						chatlistWebview.evalJS("CHAT.chat('"+msg_text_val+"')");
+						chatlistWebview.evalJS("CHAT.chat('"+JSON.stringify(dataContent)+"')");
 //						receiveMsg(app.imgServerUrl+friendUserImage,"测试接收到信息~~~~~");
 					});
 					

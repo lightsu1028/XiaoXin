@@ -107,7 +107,7 @@
 					loadingFriendRequests();
 					CHAT.init();
 				});
-				CHAT.init();
+//				CHAT.init();
 
 
 				// 为聊天快照列表量绑定点击事件
@@ -129,9 +129,9 @@
 					
 					var me = app.getUserGlobalInfo();
 					// 标记未读状态为已读
-					app.readUserChatSnapshot(me.id, friendUserId);
+//					app.readUserChatSnapshot(me.id, friendUserId);
 					// 渲染快照列表进行展示
-					loadingChatSnapshot();
+//					loadingChatSnapshot();
 				});
 				
 				
@@ -198,13 +198,14 @@
 				wsopen: function() {
 					console.log("websocket连接已建立...");
 					
-//					var me = app.getUserGlobalInfo();
-//					// 构建ChatMsg
-//					var chatMsg = new app.ChatMsg(me.id, null, null, null);
-//					// 构建DataContent
-//					var dataContent = new app.DataContent(app.CONNECT, chatMsg, null);
-//					// 发送websocket
-//					CHAT.chat(JSON.stringify(dataContent));
+					var me = app.getUserGlobalInfo();
+					console.log(JSON.stringify(me));
+					// 构建ChatMsg
+					var chatMsg = new app.ChatMsg(me.id, null, null, null);
+					// 构建DataContent
+					var dataContent = new app.DataContent(app.CONNECT, chatMsg, null);
+					// 发送websocket
+					CHAT.chat(JSON.stringify(dataContent));
 //					
 //					// 每次连接之后，获取用户的未读未签收消息列表
 //					fetchUnReadMsg();
