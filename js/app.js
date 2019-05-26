@@ -60,7 +60,10 @@ window.app = {
 	 * 登出后，移除用户全局对象
 	 */
 	userLogout: function() {
+		//删除用户缓存信息
 		plus.storage.removeItem("userInfo");
+		//删除用户通讯录缓存信息
+		plus.storage.removeItem("contactList");
 	},
 	
 	/**

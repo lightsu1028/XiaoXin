@@ -94,13 +94,12 @@
 			})
 			//延时加载
 			setTimeout(initData,1000);
-//			initData();
 		})
 		
 		//预加载
 		function initData(){
 			let xiaoxin_chatlist = plus.webview.getWebviewById("xiaoxin-chatlist.html");
-			mui.fire(xiaoxin_chatlist,"refresh");
+			mui.fire(xiaoxin_chatlist,"refresh"); //刷新好友请求，初始化websocket
 			
 			let xiaoxin_mine = plus.webview.getWebviewById("xiaoxin-mine.html");
 			mui.fire(xiaoxin_mine,"refresh");

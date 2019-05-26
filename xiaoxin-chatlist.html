@@ -99,15 +99,16 @@
 				// 加载好友请求记录
 				var thisWebview = plus.webview.currentWebview();
 				thisWebview.addEventListener("show", function(){
+					console.log("触发xiaoxin-chatlist的show监听事件，加载好友请求记录。。。")
 					loadingFriendRequests();
 				});
 				
 				// 添加自定义事件，刷新好友请求，初始化websocket
 				window.addEventListener("refresh", function(){
+				console.log("触发xiaoxin-chatlist的refresh听事件，初始化wbsocket，加载好友请求记录。。。")
 					CHAT.init();
 					loadingFriendRequests();
 				});
-//				CHAT.init();
 
 
 				// 为聊天快照列表量绑定点击事件
@@ -364,23 +365,28 @@
 			
 			
 			
-			// 获取后端所有好友列表
-			function fetchContactList() {
-				var user = app.getUserGlobalInfo();
-				mui.ajax(app.serverUrl + "/u/myFriends?userId=" + user.id,{
-					data:{},
-					dataType:'json',//服务器返回json格式数据
-					type:'post',//HTTP请求类型
-					timeout:10000,//超时时间设置为10秒；
-					headers:{'Content-Type':'application/json'},	              
-					success:function(data){
-						
-						if (data.status == 200) {
-							var contactList = data.data;
-							app.setContactList(contactList);
-						}
-					}
-				});
+			//获取通讯录好友列表
+			function fetchContactList(){
+						let userInfo = app.getUserGlobalInfo();
+						mui.ajax(app.serverUrl + "/user/myFriends",{
+							data:{
+								userId:userInfo.id
+							},
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							headers:{'Content-Type':'application/json'},	              
+							success:function(data){
+								
+								if (data.code == "200") {
+									let contactList= data.data;
+									app.setContactList(contactList);
+									console.log("通讯好友数据："+JSON.stringify(contactList))
+								} else {
+									console.log(JSON.stringify(data))
+								}
+							}
+						});
 			}
 			
 			// 加载好友请求记录列表
@@ -411,8 +417,6 @@
 								// 动态对忽略和通过按钮进行事件绑定
 								mui(".btnOper").on("tap", ".ignoreRequest", function(e) {
 									var friendId = this.getAttribute("friendId");
-									console.log("点击忽略操作");
-									console.log(friendId);
 									operatorFriendRequest(user.id, friendId, 0);
 								});
 								
@@ -442,14 +446,13 @@
 					timeout:10000,//超时时间设置为10秒；
 					headers:{'Content-Type':'application/json'},	              
 					success:function(data){
-						
-						// 更新通讯录
-//						var myFriendList = data.data;
-//						app.setContactList(myFriendList);
-						let myFriends = data.data;
-						app.setContactList(myFriends);
-						// 重新加载好友请求记录
-						loadingFriendRequests();
+						if(data.code=='200'){
+							// 更新通讯录
+							let myFriends = data.data;
+							app.setContactList(myFriends);
+							// 重新加载好友请求记录
+							loadingFriendRequests();
+						}
 					}
 				});
 			}

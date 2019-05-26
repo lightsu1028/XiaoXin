@@ -130,7 +130,7 @@
 								username.blur();
 								txt_password.blur();
 								
-								if (data.code == 200) {
+								if (data.code == '200') {
 									// 登录或者注册成功之后，保存全局用户对象到本地缓存
 									var userInfoJson = data.data;
 									app.setUserGlobalInfo(userInfoJson);

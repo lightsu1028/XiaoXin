@@ -70,10 +70,12 @@
 			mui.init()
 			mui.plusReady(function(){
 				
-				fetchContactList();
+				fetchContactList();//获取通讯录列表
 				
 				let currentWebView  = plus.webview.currentWebview();
 				currentWebView.addEventListener("show",function(){
+					console.log("执行xiaoxin-contact.html的show监听事件，获取缓存联系人并渲染显示")
+					
 					//从缓存中获取联系人列表，并渲染到页面
 					renderContactPage();
 					
@@ -184,7 +186,7 @@
 								if (data.code == "200") {
 									let contactList= data.data;
 									app.setContactList(contactList);
-									console.log(JSON.stringify(contactList))
+									console.log("通讯录好友记录："+JSON.stringify(contactList))
 								} else {
 									console.log(JSON.stringify(data))
 								}
