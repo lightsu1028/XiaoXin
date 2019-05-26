@@ -31,7 +31,7 @@
 		<div id="msg-outter" class="mui-content">
 			<div id='msg'>
 				
-				<div class="friend_lists">
+				<!--<div class="friend_lists">
 					<div class="header_img">
 						<img src="image/face-default-cat.png" width="40px" height="40px" />
 					</div>
@@ -154,7 +154,7 @@
 					<div class="msg-wrapper left">
 						<p class="msg-right-green">assdsdf</p>
 					</div>
-				</div>
+				</div>-->
 
 			</div>
 		</div>
@@ -190,6 +190,8 @@
 					
 					let chatting_nickname = document.getElementById("chatting-nickname");
 					chatting_nickname.innerHTML=friendUserNickName;
+					
+					initChatHistory();//渲染初始化聊天记录
 					
 					let areaList = document.getElementById("msg");
 					// 设置聊天记录进入页面的时候自动滚动到最后一条
@@ -243,9 +245,11 @@
 						
 						//向netty服务器发送消息
 						let chatlistWebview = plus.webview.getWebviewById("xiaoxin-chatlist.html");
-//						chatlistWebview.evalJS("CHAT.chat('"+msg_text_val+"')");
 						chatlistWebview.evalJS("CHAT.chat('"+JSON.stringify(dataContent)+"')");
-//						receiveMsg(app.imgServerUrl+friendUserImage,"测试接收到信息~~~~~");
+						//保存聊天记录
+						app.saveUserChatHistory(userInfo.id, friendUserId, msg_text_val, 1);
+						//保存聊天快照
+						app.saveUserChatSnapshot(userInfo.id,friendUserId,msg_text_val,true);
 					});
 					
 				})
@@ -308,6 +312,40 @@
 				// 设置聊天记录进入页面的时候自动滚动到最后一条
 				areaMsgList.scrollTop = areaMsgList.scrollHeight + areaMsgList.offsetHeight;
 			};
+			//渲染聊天记录
+			function initChatHistory(){
+				let msgHtml = document.getElementById("msg");
+				var me = app.getUserGlobalInfo();
+				
+				
+				let historyChatMsgs = app.getUserChatHistory(me.id,friendUserId);
+				let joinResult='';
+				for(var i=0;i<historyChatMsgs.length;i++){
+					
+					let msg = historyChatMsgs[i];
+					
+					if(msg.flag==1){
+						joinResult+='<div class="me_lists">'+
+										'<div class="header_img">'+
+											'<img src="'+app.imgServerUrl+me.faceImage+'" width="40px" height="40px" />'+
+										'</div>'+
+										'<div class="msg-wrapper left">'+
+											'<p class="msg-right-green">'+msg.msg+'</p>'+
+										'</div>'+
+									'</div>';
+					}else if(msg.flag==2){
+						joinResult+='<div class="friend_lists">'+
+										'<div class="header_img">'+
+											'<img src="'+app.imgServerUrl+friendUserImage+'" width="40px" height="40px" />'+
+										'</div>'+
+										'<div class="msg-wrapper right">'+
+											'<p class="msg-left-white">'+msg.msg+'</p>'+
+										'</div>'+
+									'</div>';
+					}
+				}
+				msgHtml.innerHTML=joinResult;
+			}
 		</script>
 	</body>
 

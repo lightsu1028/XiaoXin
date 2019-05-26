@@ -190,7 +190,7 @@
 						setTimeout(CHAT.reChat(msg), 1000);
 					}
 					// 渲染快照列表进行展示
-//					loadingChatSnapshot();
+					loadingChatSnapshot();
 				},
 				reChat: function(msg) {
 					console.log("消息重新发送...");
@@ -229,14 +229,15 @@
 //					var chatMsg = dataContent.chatMsg;
 //					var msg = chatMsg.msg;
 //					var friendUserId = chatMsg.senderId;
-//					var myId = chatMsg.receiverId;
+					
 					
 					var chatMsg = dataContent.chatMsg;
 					var msg= chatMsg.msg;
 					var friendUserId = chatMsg.senderId;
+					var myId = chatMsg.receiverId;
 //					// 调用聊天webview的receiveMsg方法
 					var chatWebview = plus.webview.getWebviewById("chatting-"+friendUserId);
-//					var isRead = true;	// 设置消息的默认状态为已读
+					var isRead = true;	// 设置消息的默认状态为已读
 					if (chatWebview != null) {
 						chatWebview.evalJS("receiveMsg('" + msg + "')");
 						chatWebview.evalJS("resizeScreen()");
@@ -248,12 +249,13 @@
 					// 接受到消息之后，对消息记录进行签收
 					var dataContentSign = new app.DataContent(app.SIGNED, null, chatMsg.msgId);
 					CHAT.chat(JSON.stringify(dataContentSign));
-//					
-//					// 保存聊天历史记录到本地缓存
-//					app.saveUserChatHistory(myId, friendUserId, msg, 2);
-//					app.saveUserChatSnapshot(myId, friendUserId, msg, isRead);
-//					// 渲染快照列表进行展示
-//					loadingChatSnapshot();
+					
+					// 保存聊天历史记录到本地缓存
+					app.saveUserChatHistory(myId, friendUserId, msg, 2);
+					//保存聊天快照列表到缓存
+					app.saveUserChatSnapshot(myId, friendUserId, msg, isRead);
+					// 渲染快照列表进行展示
+					loadingChatSnapshot();
 				},
 				wsclose: function() {
 					console.log("连接关闭...");
@@ -328,6 +330,7 @@
 			function loadingChatSnapshot() {
 				var user = app.getUserGlobalInfo();
 				var chatSnapshotList = app.getUserChatSnapshot(user.id);
+				console.log("聊天快照缓存数据列表："+JSON.stringify(chatSnapshotList));
 				
 				var chatItemHtml = "";
 				var ul_chatSnapshot = document.getElementById("ul_chatSnapshot");
@@ -338,7 +341,7 @@
 					var friendId = chatItem.friendId;
 					// 根据friendId从本地联系人列表的缓存中拿到相关信息
 					var friend = app.getFriendFromContactList(friendId);
-					
+					console.log("本地联系人查找朋友信息:"+JSON.stringify(friend))
 					// 判断消息的已读或未读状态
 					var isRead = chatItem.isRead;
 					var readHtmlBefore = '';
@@ -348,16 +351,23 @@
 						readHtmlAfter = '</span>';
 					}
 					
-					chatItemHtml =  '<li friendUserId="' + friendId + '" friendNickname="' + friend.friendNickname + '" friendFaceImage="' + friend.friendFaceImage + '" class="chat-with-friend mui-table-view-cell mui-media">' +
-										'<div class="mui-slider-right mui-disabled">' +
-											'<a id="link_delChatRecord" friendUserId="' + friendId + '" class="mui-btn mui-btn-red">删除</a>' +
-										'</div>' +
-										'<div class="mui-slider-handle mui-media-body ">' +
-								            '<img class="mui-media-object mui-pull-left" src="' + app.imgServerUrl + friend.friendFaceImage + '"/>' +
-								            	readHtmlBefore + friend.friendNickname + readHtmlAfter + 
-								            '<p class="mui-ellipsis">' + chatItem.msg + '</p>' +
-							            '</div>' +
-								    '</li>';
+//					chatItemHtml =  '<li friendUserId="' + friendId + '" friendNickname="' + friend.nickname + '" friendFaceImage="' + friend.faceImageBig + '" class="chat-with-friend mui-table-view-cell mui-media">' +
+//										'<div class="mui-slider-right mui-disabled">' +
+//											'<a id="link_delChatRecord" friendUserId="' + friendId + '" class="mui-btn mui-btn-red">删除</a>' +
+//										'</div>' +
+//										'<div class="mui-slider-handle mui-media-body ">' +
+//								            '<img class="mui-media-object mui-pull-left" src="' + app.imgServerUrl + friend.faceImageBig + '"/>' +
+//								            	readHtmlBefore + friend.nickname + readHtmlAfter + 
+//								            '<p class="mui-ellipsis">' + chatItem.msg + '</p>' +
+//							            '</div>' +
+//								    '</li>';
+					chatItemHtml =  '<li friendUserId="'+friendId+'" friendNickname="'+friend.friendUserNickName+'" friendImage="'+friend.friendUserImage+'" class="chat-with-friend mui-table-view-cell mui-media">'+
+								            '<div class="mui-media-body">'+
+									            '<img class="mui-media-object mui-pull-left" src="'+app.imgServerUrl+friend.friendUserImage+'"/>'+
+									            	readHtmlBefore+friend.friendUserNickName+readHtmlAfter+
+									            '<p class="mui-ellipsis">'+chatItem.msg+'</p>'+
+								            '</div>'+
+			    					'</li>';
 					ul_chatSnapshot.insertAdjacentHTML('beforeend', chatItemHtml);
 				}
 				
