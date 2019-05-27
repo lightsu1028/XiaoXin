@@ -141,7 +141,7 @@
 					var me = this;	// a 标签
 					
 					// 获取朋友id
-					var friendUserId = me.getAttribute("friendUserId");
+					var friendUserId = me.getAttribute("friendId");
 					
 					// 1. 删除本地聊天记录
 					app.deleteUserChatHistory(user.id, friendUserId);
@@ -364,7 +364,10 @@
 //							            '</div>' +
 //								    '</li>';
 					chatItemHtml =  '<li friendUserId="'+friendId+'" friendNickname="'+friend.friendUserNickName+'" friendImage="'+friend.friendUserImage+'" class="chat-with-friend mui-table-view-cell mui-media">'+
-								            '<div class="mui-media-body">'+
+								            '<div class="mui-slider-right mui-disabled">' +
+												'<a id="link_delChatRecord" friendUserId="' + friendId + '" class="mui-btn mui-btn-red">删除</a>' +
+											'</div>' +
+								            '<div class="mui-slider-handle mui-media-body">'+
 									            '<img class="mui-media-object mui-pull-left" src="'+app.imgServerUrl+friend.friendUserImage+'"/>'+
 									            	readHtmlBefore+friend.friendUserNickName+readHtmlAfter+
 									            '<p class="mui-ellipsis">'+chatItem.msg+'</p>'+
