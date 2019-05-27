@@ -114,8 +114,8 @@
 				// 为聊天快照列表量绑定点击事件
 				mui("#ul_chatSnapshot").on("tap", ".chat-with-friend", function(e){
 					var friendUserId = this.getAttribute("friendUserId");
-					var friendNickname = this.getAttribute("friendNickname");
-					var friendFaceImage = this.getAttribute("friendFaceImage");
+					var friendUserNickName = this.getAttribute("friendNickname");
+					var friendFaceImage = this.getAttribute("friendImage");
 					
 					// 打开聊天子页面
 					mui.openWindow({
@@ -123,8 +123,8 @@
 						id: "chatting-" + friendUserId,	// 每个朋友的聊天页面都是唯一对应的
 						extras: {
 							friendUserId: friendUserId,
-							friendNickname: friendNickname,
-							friendFaceImage: friendFaceImage
+							friendUserNickName: friendUserNickName,
+							friendUserImage: friendFaceImage
 						}
 					});
 					
@@ -235,7 +235,7 @@
 					var msg= chatMsg.msg;
 					var friendUserId = chatMsg.senderId;
 					var myId = chatMsg.receiverId;
-//					// 调用聊天webview的receiveMsg方法
+					// 调用聊天webview的receiveMsg方法
 					var chatWebview = plus.webview.getWebviewById("chatting-"+friendUserId);
 					var isRead = true;	// 设置消息的默认状态为已读
 					if (chatWebview != null) {
