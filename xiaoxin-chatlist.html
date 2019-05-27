@@ -130,9 +130,9 @@
 					
 					var me = app.getUserGlobalInfo();
 					// 标记未读状态为已读
-//					app.readUserChatSnapshot(me.id, friendUserId);
+					app.readUserChatSnapshot(me.id, friendUserId);
 					// 渲染快照列表进行展示
-//					loadingChatSnapshot();
+					loadingChatSnapshot();
 				});
 				
 				
@@ -209,7 +209,7 @@
 					CHAT.chat(JSON.stringify(dataContent));
 //					
 //					// 每次连接之后，获取用户的未读未签收消息列表
-//					fetchUnReadMsg();
+					fetchUnReadMsg();
 //					
 //					// 定时发送心跳
 //					setInterval("CHAT.keepalive()", 10000);
@@ -287,17 +287,19 @@
 			function fetchUnReadMsg() {
 				var user = app.getUserGlobalInfo();
 				var msgIds = ",";	// 格式：  ,1001,1002,1003,
-				mui.ajax(app.serverUrl + "/u/getUnReadMsgList?acceptUserId=" + user.id,{
-					data:{},
+				mui.ajax(app.serverUrl + "/user/getUnReadMessage",{
+					data:{
+						receiveUserId:user.id
+					},
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；
 					headers:{'Content-Type':'application/json'},	              
 					success:function(data){
 						
-						if (data.status == 200) {
+						if (data.code == '200') {
 							var unReadMsgList = data.data;
-							console.log(JSON.stringify(unReadMsgList));
+							console.log("edd"+JSON.stringify(unReadMsgList));
 							
 							// 1. 保存聊天记录到本地
 							// 2. 保存聊天快照到本地
